@@ -16,4 +16,6 @@ set fileformat=unix
 set foldmethod=indent
 set foldlevel=99
 " Showing docstring when folding code. This way needs SimpylFold Plugin.
-let g:SimpylFold_docstring_preview=
+let g:SimpylFold_docstring_preview=1
+
+

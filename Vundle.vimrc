@@ -39,6 +39,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'nvie/vim-flake8'
+Plugin 'kevinw/pyflakes-vim'
 Plugin 'scrooloose/nerdtree'
 
 
