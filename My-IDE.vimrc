@@ -1,5 +1,6 @@
 set nocompatible
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
 "                       Vundle配置                       "
@@ -55,6 +56,9 @@ Plugin 'Lokaltog/vim-powerline'
 Plugin 'tomasr/molokai'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -295,6 +299,7 @@ highlight FoldColumn guibg=darkgrey guifg=white
 " git : https://github.com/Valloric/YouCompleteMe
 """"""""""""""""""""""""""""""""
 " 配置默认的ycm_extra_conf.py
+
 if has('win32')
     " WINDOWS
     let g:ycm_global_ycm_extra_conf = '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
