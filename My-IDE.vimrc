@@ -1,44 +1,14 @@
 set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
-
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
 
 source $VIMHOME/conf/Vundle.vimrc
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"                        filetype                        "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype on
 filetype plugin indent on
-"source $VIMHOME/conf/ComEnv.vimrc
-"source $VIMHOME/conf/YCM.vimrc
-"source $VIMHOME/conf/NERDTree.vimrc
-"source $VIMHOME/conf/Syntastic.vimrc
-"au BufNewFile,BufRead *.py source $VIMHOME/conf/PyEnv.vimrc
-"au BufNewFile,BufRead *.html,*.css source $VIMHOME/conf/WebEnv.vimrc
-"au BufNewFile,BufRead *.js source $VIMHOME/conf/jsEnv.vimrc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -141,16 +111,13 @@ let NERDTreeWinSize=31
 "不显示'Bookmarks' label 'Press ? for help'
 let NERDTreeMinimalUI=1
 "快捷键
-nnoremap <silent> <F2> :NERDTreeToggle<CR>
+nnoremap <silent> <F2> :NERDTreeTabsToggle<CR>
 " 默认在新的标签页中打开文件，并将光标定位到新标签页中。
 autocmd FileType nerdtree nmap <buffer> <CR> t
-""Plugin 'nvie/vim-flake8'
+"启动时不打开NERDTreeTabs
+let g:nerdtree_tabs_open_on_gui_startup=0
 "当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
-"只剩 NERDTree时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-"进入VIM自动打开 NERDTree
-"autocmd vimenter * NERDTree
 
 
 """"""""""""""""""""""""""""""""
