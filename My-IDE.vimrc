@@ -40,6 +40,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'tmhedberg/SimpylFold'
 " 缩进(Python)
 Plugin 'vim-scripts/indentpython.vim'
+Plugin 'thinca/vim-quickrun'
 " 代码补全
 Plugin 'Valloric/YouCompleteMe'
 " 静态语法检查
@@ -167,8 +168,6 @@ let NERDTreeWinSize=31
 let NERDTreeMinimalUI=1
 "快捷键
 nnoremap <silent> <F2> :NERDTreeTabsToggle<CR>
-" 默认在新的标签页中打开文件，并将光标定位到新标签页中。
-autocmd FileType nerdtree nmap <buffer> <CR> t
 "启动时不打开NERDTreeTabs
 let g:nerdtree_tabs_open_on_gui_startup=0
 "当打开vim且没有文件时自动打开NERDTree
@@ -219,7 +218,9 @@ map <leader>w :tabc<CR>
 " 编译和运行
 """"""""""""""""""""""""""""""""
 " 运行当前Python脚本。（根据环境将!python更换为Python的执行文件）
-autocmd FileType python map <F5> :!python %<CR><CR>
+"autocmd FileType python map <buffer> <F5> :pyf %:p<CR>
+autocmd FileType python map <F5> :QuickRun<CR>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -413,4 +414,15 @@ function PyIDE()
     """"""""""""""""""""""""""""""""
     "使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
     let g:syntastic_python_checkers=["flake8"] 
+
+    """"""""""""""""""""""""""""""""
+    " Quickrun配置
+    """"""""""""""""""""""""""""""""
+    let g:quickrun_config = {
+        \ "_" : {
+        \ "outputter" : "message",
+        \ },
+    \}
+
+    let g:quickrun_no_default_key_mappings = 1
 endfunc
