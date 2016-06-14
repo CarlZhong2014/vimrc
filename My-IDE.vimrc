@@ -40,7 +40,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'tmhedberg/SimpylFold'
 " 缩进(Python)
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'thinca/vim-quickrun'
+""Plugin 'thinca/vim-quickrun'
 " 代码补全
 Plugin 'Valloric/YouCompleteMe'
 " 静态语法检查
@@ -218,8 +218,7 @@ map <leader>w :tabc<CR>
 " 编译和运行
 """"""""""""""""""""""""""""""""
 " 运行当前Python脚本。（根据环境将!python更换为Python的执行文件）
-"autocmd FileType python map <buffer> <F5> :pyf %:p<CR>
-autocmd FileType python map <F5> :QuickRun<CR>
+autocmd FileType python map <F5> :!python %:p<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -415,14 +414,4 @@ function PyIDE()
     "使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
     let g:syntastic_python_checkers=["flake8"] 
 
-    """"""""""""""""""""""""""""""""
-    " Quickrun配置
-    """"""""""""""""""""""""""""""""
-    let g:quickrun_config = {
-        \ "_" : {
-        \ "outputter" : "message",
-        \ },
-    \}
-
-    let g:quickrun_no_default_key_mappings = 1
 endfunc
