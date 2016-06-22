@@ -44,7 +44,13 @@ Plugin 'vim-scripts/indentpython.vim'
 " 代码补全
 Plugin 'Valloric/YouCompleteMe'
 " 静态语法检查
-Plugin 'scrooloose/syntastic'
+"" Plugin 'scrooloose/syntastic'
+
+" Python 语法检查
+Plugin 'nvie/vim-pep8'
+Plugin 'nvie/vim-flake8'
+Plugin 'kevinw/pyflakes-vim'
+
 " 目录导航
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'scrooloose/nerdtree'
@@ -134,6 +140,15 @@ if has ("gui_running")
     set guioptions-=m
 endif
 
+
+""""""""""""""""""""""""""""""""
+" 启动gvim时，窗口最大化
+""""""""""""""""""""""""""""""""
+if has("win32")
+ au GUIEnter * simalt ~x
+endif
+
+
 """"""""""""""""""""""""""""""""
 " 标签页设置
 """"""""""""""""""""""""""""""""
@@ -171,7 +186,7 @@ nnoremap <silent> <F2> :NERDTreeTabsToggle<CR>
 "启动时不打开NERDTreeTabs
 let g:nerdtree_tabs_open_on_gui_startup=0
 "当打开vim且没有文件时自动打开NERDTree
-autocmd vimenter * if !argc() | NERDTree | endif
+" autocmd vimenter * if !argc() | NERDTree | endif
 
 
 """"""""""""""""""""""""""""""""
@@ -314,9 +329,9 @@ let g:ycm_confirm_extra_conf=0
 "使用ctags生成的tags文件
 let g:ycm_collect_identifiers_from_tag_files = 1 
 
-"通过 :YcmDiags 命令可以查看当前的文件有哪些编译错误. 
-map <F4> : YcmDiags<CR>
-
+" YCM will auto-close the 'preview' window after
+" the user accepts the offered completion string. 
+let g:ycm_autoclose_preview_window_after_completion=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -327,65 +342,63 @@ map <F4> : YcmDiags<CR>
 " git : https://github.com/scrooloose/syntastic
 """"""""""""""""""""""""""""""""
 "Global Option
-"打开文件时，检查语法。
-let g:syntastic_check_on_open = 1
-"保存退出时，不检查语法
-let g:syntastic_check_on_wq = 0
-"设置为手动模式
-let g:syntastic_mode_map={'mode': 'passive'}
-
-"For Location list
-"总是显示Location list
-let g:syntastic_always_populate_loc_list = 1
-"自动开关loc-list的模式(0\1\2\3\)
-"0 : When set to 0 the error window will be neither opened nor closed automatically.
-"1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
-"2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
-"3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
-let g:syntastic_auto_loc_list = 1
-"设置loc_list高亮值，默认为10.
-let g:syntastic_loc_list_height = 5
-" loc_list 快捷键设置
-" 使用<F3>打开/关闭Error Location list
-nnoremap <silent> <F3> :w<CR> :SyntasticCheck<CR>
-imap <silent> <F3> <ESC>:w<CR> :SyntasticCheck<CR>
-"跳到下一条错误
-map <leader>n :lnext<CR>
-imap <leader>n <ESC>:lnext<CR>
-" 跳到上一条错误
-map <leader>m :lprevious<CR>
-imap <leader>m <ESC>:lprevious<CR>
-
-
-"For Command Windows
-
-"For Signs
-"Use this option to tell syntastic whether to use the `:sign` interface to mark syntax errors.
-let g:syntastic_enable_signs = 1
-"使用EE标记错误行
-let g:syntastic_error_symbol = 'EE'
-let g:syntastic_style_error_symbol = 'E>'
-"使用ww标记warning行
-let g:syntastic_warning_symbol = 'WW'
-let g:syntastic_style_warning_symbol = 'W>'
-
-
-"For Statusline Flag
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-"For Error Balloons
-"启用Error Balloons
-let g:syntastic_enable_balloons = 1
-
-"For Highlighting errors
-"高亮错误
-let g:syntastic_enable_highlighting = 1
-highlight SyntasticErrorSign guifg=white guibg=red
-
-" 累计Error和Warning
-let g:syntastic_aggregate_errors = 1
+"打开文件时，检查语法。 let g:syntastic_check_on_open = 1 "保存退出时，不检查语法
+" let g:syntastic_check_on_wq = 0
+" "设置为手动模式
+" let g:syntastic_mode_map={'mode': 'passive'}
+" 
+" "For Location list
+" "总是显示Location list
+" let g:syntastic_always_populate_loc_list = 1
+" "自动开关loc-list的模式(0\1\2\3\)
+" "0 : When set to 0 the error window will be neither opened nor closed automatically.
+" "1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
+" "2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
+" "3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
+" let g:syntastic_auto_loc_list = 1
+" "设置loc_list高亮值，默认为10.
+" let g:syntastic_loc_list_height = 5
+" " loc_list 快捷键设置
+" " 使用<F3>打开/关闭Error Location list
+" nnoremap <silent> <F3> :w<CR> :SyntasticCheck<CR>
+" imap <silent> <F3> <ESC>:w<CR> :SyntasticCheck<CR>
+" "跳到下一条错误
+" map <leader>n :lnext<CR>
+" imap <leader>n <ESC>:lnext<CR>
+" " 跳到上一条错误
+" map <leader>m :lprevious<CR>
+" imap <leader>m <ESC>:lprevious<CR>
+" 
+" 
+" "For Command Windows
+" 
+" "For Signs
+" "Use this option to tell syntastic whether to use the `:sign` interface to mark syntax errors.
+" let g:syntastic_enable_signs = 1
+" "使用EE标记错误行
+" let g:syntastic_error_symbol = 'EE'
+" let g:syntastic_style_error_symbol = 'E>'
+" "使用ww标记warning行
+" let g:syntastic_warning_symbol = 'WW'
+" let g:syntastic_style_warning_symbol = 'W>'
+" 
+" 
+" "For Statusline Flag
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" 
+" "For Error Balloons
+" "启用Error Balloons
+" let g:syntastic_enable_balloons = 1
+" 
+" "For Highlighting errors
+" "高亮错误
+" let g:syntastic_enable_highlighting = 1
+" highlight SyntasticErrorSign guifg=white guibg=red
+" 
+" " 累计Error和Warning
+" let g:syntastic_aggregate_errors = 1
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -412,6 +425,29 @@ function PyIDE()
     " Syntastic PYTHON语法检查配置
     """"""""""""""""""""""""""""""""
     "使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
-    let g:syntastic_python_checkers=["flake8"] 
+    "" let g:syntastic_python_checkers=["flake8"] 
+
+    
+    """"""""""""""""""""""""""""""""
+    " Flake8 PYTHON语法检查配置
+    """""""""""""""""""""""""""""""" 
+    " To customize gutter marker.
+    " To customize whether the show signs in the gutter, set `g:flake8_show_in_gutter`:
+    let g:flake8_show_in_gutter=1
+    " To customize the gutter markers, set any of `flake8_error_marker`, `flake8_warning_marker`,
+    " `flake8_pyflake_marker`, `flake8_complexity_marker`, `flake8_naming_marker`. 
+    " Setting one to the empty string disables it. Ex.:
+    let g:flake8_error_marker='EE'     " set error marker to 'EE'
+    let g:flake8_warning_marker='WW'   " set warning marker to 'WW'
+    let g:flake8_pyflake_marker='PM'     
+    let g:flake8_complexity_marker='CM'  
+    let g:flake8_naming_marker='NW'      
+    
+    " To customize whether the show marks in the file, set `g:flake8_show_in_file`:
+    let g:flake8_show_in_file=1
 
 endfunc
+
+" Enable tip function, it will be cheack every time you write a Python file:
+au BufWritePost *.py call Flake8()
+
