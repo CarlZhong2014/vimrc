@@ -56,9 +56,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Lokaltog/vim-powerline'
 " molokai 配色方案
 Plugin 'tomasr/molokai'
-" 代码视图 ctags+taglist
-Plugin 'vim-scripts/ctags.vim'
-Plugin 'vim-scripts/taglist.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
