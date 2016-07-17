@@ -42,14 +42,13 @@ Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
 ""Plugin 'thinca/vim-quickrun'
 " 代码补全
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
+" Python 代码补全
+Plugin 'davidhalter/jedi-vim'
 " 静态语法检查
-"" Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 
 " Python 语法检查
-Plugin 'nvie/vim-pep8'
-Plugin 'nvie/vim-flake8'
-Plugin 'kevinw/pyflakes-vim'
 
 " 目录导航
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -58,6 +57,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Lokaltog/vim-powerline'
 " molokai 配色方案
 Plugin 'tomasr/molokai'
+" 代码视图 ctags+taglist
+Plugin 'vim-scripts/ctags.vim'
+Plugin 'vim-scripts/taglist.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
@@ -222,13 +224,14 @@ nnoremap <C-h> <C-w><C-h>
 """"""""""""""""""""""""""""""""
 " 标签页切换快捷键
 """"""""""""""""""""""""""""""""
-" 切换到上一个标签`,+h`
+" 切换到上一个标签`,+q`
 map <leader>q :tabp<CR>
-" 切换到下一个标签`,+l`
+" 切换到下一个标签`,+e`
 map <leader>e :tabn<CR>
 " 关闭当前标签页面`,+w`
 map <leader>w :tabc<CR>
-
+" 创建新的标签页
+map <leader>c :tabnew<CR>
 """"""""""""""""""""""""""""""""
 " 编译和运行
 """"""""""""""""""""""""""""""""
@@ -270,6 +273,11 @@ set textwidth=81
 """"""""""""""""""""""""""""""""
 set laststatus=2   " Always show the statusline
 
+
+
+""""""""""""""""""""""""""""""""
+" Fold setting 
+""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""
 " SimpylFold 
 " git : https://github.com/tmhedberg/SimpylFold
@@ -277,10 +285,6 @@ set laststatus=2   " Always show the statusline
 "The first line of your docstrings always appear in the fold text
 let g:SimpylFold_docstring_preview=1
 
-
-""""""""""""""""""""""""""""""""
-" Fold setting 
-""""""""""""""""""""""""""""""""
 "默认不折叠代码
 set nofoldenable
 
@@ -291,14 +295,14 @@ set foldmethod=indent
 "set foldlevel=99
 
 "When press `f` will fold and unfold current code according to foldmethod option.
-map f za
+map f @=((foldclosed(line('.')) < 0 ) ? 'zC' : 'zO')<CR>
 
 "When press `F` will fold and unfold all code according to foldmethod option.
 ""
 map F @=((foldclosed(line('.')) < 0) ? 'zM' : 'zR')<CR>
 
 "折叠栏颜色设置
-highlight Folded guibg=grey guifg=blue
+highlight Folded guibg=white guifg=blue
 highlight FoldColumn guibg=darkgrey guifg=white
 
 
@@ -312,26 +316,32 @@ highlight FoldColumn guibg=darkgrey guifg=white
 """"""""""""""""""""""""""""""""
 " 配置默认的ycm_extra_conf.py
 
-if has('win32')
+" if has('win32')
     " WINDOWS
-    let g:ycm_global_ycm_extra_conf = '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
-else
+"     let g:ycm_global_ycm_extra_conf = '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
+" else
     " *nix & OS X
-    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-endif
+"     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+" endif
+
+"按`,+d` 会跳转到声明
+" nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 
 "按`,+g` 会跳转到定义
-nnoremap <silent> <leader>g:YcmCompleter GoToDefinitionElseDeclaration<CR>   
+" nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
+
+"按`,+r` 会跳转到参考文档
+" nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
 "打开vim时不再询问是否加载ycm_extra_conf.py配置
-let g:ycm_confirm_extra_conf=0   
+" let g:ycm_confirm_extra_conf=0   
 
 "使用ctags生成的tags文件
-let g:ycm_collect_identifiers_from_tag_files = 1 
+" let g:ycm_collect_identifiers_from_tag_files = 1 
 
 " YCM will auto-close the 'preview' window after
 " the user accepts the offered completion string. 
-let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_autoclose_preview_window_after_completion=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -342,63 +352,81 @@ let g:ycm_autoclose_preview_window_after_completion=1
 " git : https://github.com/scrooloose/syntastic
 """"""""""""""""""""""""""""""""
 "Global Option
-"打开文件时，检查语法。 let g:syntastic_check_on_open = 1 "保存退出时，不检查语法
-" let g:syntastic_check_on_wq = 0
-" "设置为手动模式
+" 打开文件时，不检查语法。
+let g:syntastic_check_on_open = 0 
+" 保存退出时，检查语法
+let g:syntastic_check_on_wq = 1
+" 设置为手动模式
 " let g:syntastic_mode_map={'mode': 'passive'}
-" 
-" "For Location list
-" "总是显示Location list
-" let g:syntastic_always_populate_loc_list = 1
-" "自动开关loc-list的模式(0\1\2\3\)
-" "0 : When set to 0 the error window will be neither opened nor closed automatically.
-" "1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
-" "2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
-" "3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
-" let g:syntastic_auto_loc_list = 1
+
+" For Location list
+" 总是显示Location list
+let g:syntastic_always_populate_loc_list = 1
+" 自动开关loc-list的模式(0\1\2\3\)
+" 0 : When set to 0 the error window will be neither opened nor closed automatically.
+" 1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
+" 2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
+" 3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
+let g:syntastic_auto_loc_list = 1
 " "设置loc_list高亮值，默认为10.
-" let g:syntastic_loc_list_height = 5
-" " loc_list 快捷键设置
-" " 使用<F3>打开/关闭Error Location list
-" nnoremap <silent> <F3> :w<CR> :SyntasticCheck<CR>
-" imap <silent> <F3> <ESC>:w<CR> :SyntasticCheck<CR>
-" "跳到下一条错误
-" map <leader>n :lnext<CR>
-" imap <leader>n <ESC>:lnext<CR>
-" " 跳到上一条错误
-" map <leader>m :lprevious<CR>
-" imap <leader>m <ESC>:lprevious<CR>
+let g:syntastic_loc_list_height = 5
+" loc_list 快捷键设置
+" 使用<F3>打开/关闭Error Location list
+nnoremap <silent> <F3> :w<CR> :SyntasticCheck<CR>
+imap <silent> <F3> <ESC>:w<CR> :SyntasticCheck<CR>
+" 跳到下一条错误
+map <leader>n :lnext<CR>
+imap <leader>n <ESC>:lnext<CR>
+" 跳到上一条错误
+map <leader>m :lprevious<CR>
+imap <leader>m <ESC>:lprevious<CR>
 " 
 " 
 " "For Command Windows
 " 
 " "For Signs
 " "Use this option to tell syntastic whether to use the `:sign` interface to mark syntax errors.
-" let g:syntastic_enable_signs = 1
+let g:syntastic_enable_signs = 1
 " "使用EE标记错误行
-" let g:syntastic_error_symbol = 'EE'
-" let g:syntastic_style_error_symbol = 'E>'
+let g:syntastic_error_symbol = 'EE'
+let g:syntastic_style_error_symbol = 'E>'
 " "使用ww标记warning行
-" let g:syntastic_warning_symbol = 'WW'
-" let g:syntastic_style_warning_symbol = 'W>'
+let g:syntastic_warning_symbol = 'WW'
+let g:syntastic_style_warning_symbol = 'W>'
 " 
 " 
 " "For Statusline Flag
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 " 
 " "For Error Balloons
 " "启用Error Balloons
-" let g:syntastic_enable_balloons = 1
+let g:syntastic_enable_balloons = 1
 " 
 " "For Highlighting errors
 " "高亮错误
-" let g:syntastic_enable_highlighting = 1
-" highlight SyntasticErrorSign guifg=white guibg=red
+let g:syntastic_enable_highlighting = 1
+highlight SyntasticErrorSign guifg=white guibg=red
 " 
 " " 累计Error和Warning
-" let g:syntastic_aggregate_errors = 1
+let g:syntastic_aggregate_errors = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"               jedi-vim：语法检查通用配置               "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""
+" git : https://github.com/davidhalter/jedi-vim
+""""""""""""""""""""""""""""""""
+" 打开游标所在的函数或类对应的文档。" <, + r> "
+let g:jedi#documentation_command = "<leader>r"
+" 始终保持文档窗口打开
+let g:jedi#auto_close_doc = 0
+" 文档显示buffer窗口的高度。
+let g:jedi#max_doc_height = "50"
+
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -407,47 +435,11 @@ let g:ycm_autoclose_preview_window_after_completion=1
 "                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-au BufNewFile,BufRead *.py call PyIDE()
+""""""""""""""""""""""""""""""""
+" Syntastic PYTHON语法检查配置
+""""""""""""""""""""""""""""""""
+"使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
+au BufRead *.py :let g:syntastic_python_checkers=["flake8"] 
 
-function PyIDE()
-    """"""""""""""""""""""""""""""""
-    " YCM PYTHON自动补全配置
-    """"""""""""""""""""""""""""""""
-    " 指定python执行文件.
-    if has('win32')
-    " WINDOWS
-        let g:ycm_python_binary_path = 'C:\Python27\python.exe'
-    else
-    " *nix & OS X
-        let g:ycm_python_binary_path = '/usr/bin/python2.7'
-    endif
-    """"""""""""""""""""""""""""""""
-    " Syntastic PYTHON语法检查配置
-    """"""""""""""""""""""""""""""""
-    "使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
-    "" let g:syntastic_python_checkers=["flake8"] 
 
-    
-    """"""""""""""""""""""""""""""""
-    " Flake8 PYTHON语法检查配置
-    """""""""""""""""""""""""""""""" 
-    " To customize gutter marker.
-    " To customize whether the show signs in the gutter, set `g:flake8_show_in_gutter`:
-    let g:flake8_show_in_gutter=1
-    " To customize the gutter markers, set any of `flake8_error_marker`, `flake8_warning_marker`,
-    " `flake8_pyflake_marker`, `flake8_complexity_marker`, `flake8_naming_marker`. 
-    " Setting one to the empty string disables it. Ex.:
-    let g:flake8_error_marker='EE'     " set error marker to 'EE'
-    let g:flake8_warning_marker='WW'   " set warning marker to 'WW'
-    let g:flake8_pyflake_marker='PM'     
-    let g:flake8_complexity_marker='CM'  
-    let g:flake8_naming_marker='NW'      
-    
-    " To customize whether the show marks in the file, set `g:flake8_show_in_file`:
-    let g:flake8_show_in_file=1
-
-endfunc
-
-" Enable tip function, it will be cheack every time you write a Python file:
-au BufWritePost *.py call Flake8()
 
