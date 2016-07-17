@@ -47,9 +47,8 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'davidhalter/jedi-vim'
 " 静态语法检查
 Plugin 'scrooloose/syntastic'
-
-" Python 语法检查
-
+" 缩进线插件
+Plugin  'Yggdroot/indentLine'
 " 目录导航
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'scrooloose/nerdtree'
@@ -273,8 +272,20 @@ set textwidth=81
 """"""""""""""""""""""""""""""""
 set laststatus=2   " Always show the statusline
 
-
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"               indentLine：语法检查通用配置             "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""
+" git : https://github.com/Yggdroot/indentLine
+""""""""""""""""""""""""""""""""
+" 启用indentLine
+let g:indentLine_enabled = 1
+" 设置缩进线的表示字符
+let g:indentLine_char = "|"
+" <,+l> 打开缩进线功能
+map <silent> <leader>l :IndentLinesToggle<CR> 
 """"""""""""""""""""""""""""""""
 " Fold setting 
 """"""""""""""""""""""""""""""""
@@ -425,8 +436,7 @@ let g:jedi#documentation_command = "<leader>r"
 " 始终保持文档窗口打开
 let g:jedi#auto_close_doc = 0
 " 文档显示buffer窗口的高度。
-let g:jedi#max_doc_height = "50"
-
+let g:jedi#max_doc_height = "10"
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
