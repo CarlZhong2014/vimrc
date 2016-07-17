@@ -263,8 +263,10 @@ set autoindent
 set shiftwidth=4
 
 
-" 每行最多有81个字符
-set textwidth=81
+" 每行最多有80个字符
+set textwidth=80
+set colorcolumn=81
+set fo+=mB
 
 """"""""""""""""""""""""""""""""
 " vim-powerline
