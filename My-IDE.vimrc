@@ -42,7 +42,7 @@ Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
 ""Plugin 'thinca/vim-quickrun'
 " 代码补全
-" Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 " Python 代码补全
 Plugin 'davidhalter/jedi-vim'
 " 静态语法检查
@@ -265,6 +265,7 @@ set shiftwidth=4
 
 " 每行最多有80个字符
 set textwidth=80
+set wrap
 set colorcolumn=81
 set fo+=mB
 
@@ -329,32 +330,39 @@ highlight FoldColumn guibg=darkgrey guifg=white
 """"""""""""""""""""""""""""""""
 " 配置默认的ycm_extra_conf.py
 
-" if has('win32')
+if has('win32')
     " WINDOWS
-"     let g:ycm_global_ycm_extra_conf = '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
-" else
+    let g:ycm_global_ycm_extra_conf =
+    '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
+    let g:ycm_python_binary_path = 'C:\\Python27'
+else
     " *nix & OS X
-"     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-" endif
+    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+    let g:ycm_python_binary_path = '/usr/bin/python'
+endif
+
+let g:ycm_complete_in_comments = 1
+
+" 跳转到定义出，分屏打开
+let g:ycm_goto_buffer_command = "vertical-split"
 
 "按`,+d` 会跳转到声明
-" nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
 
 "按`,+g` 会跳转到定义
-" nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 "按`,+r` 会跳转到参考文档
-" nnoremap <leader>r :YcmCompleter GoToReferences<CR>
+nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
 "打开vim时不再询问是否加载ycm_extra_conf.py配置
-" let g:ycm_confirm_extra_conf=0   
+let g:ycm_confirm_extra_conf=0   
 
 "使用ctags生成的tags文件
-" let g:ycm_collect_identifiers_from_tag_files = 1 
+let g:ycm_collect_identifiers_from_tag_files = 1 
 
-" YCM will auto-close the 'preview' window after
-" the user accepts the offered completion string. 
-" let g:ycm_autoclose_preview_window_after_completion=1
+" YCM will auto-close the 'preview' window after the user accepts the offered completion string. 
+let g:ycm_autoclose_preview_window_after_completion=1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -380,7 +388,7 @@ let g:syntastic_always_populate_loc_list = 1
 " 1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
 " 2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
 " 3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 " "设置loc_list高亮值，默认为10.
 let g:syntastic_loc_list_height = 5
 " loc_list 快捷键设置
@@ -434,11 +442,11 @@ let g:syntastic_aggregate_errors = 1
 " git : https://github.com/davidhalter/jedi-vim
 """"""""""""""""""""""""""""""""
 " 打开游标所在的函数或类对应的文档。" <, + r> "
-let g:jedi#documentation_command = "<leader>r"
+" let g:jedi#documentation_command = "<leader>r"
 " 始终保持文档窗口打开
 let g:jedi#auto_close_doc = 0
 " 文档显示buffer窗口的高度。
-let g:jedi#max_doc_height = "10"
+let g:jedi#max_doc_height = "5"
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -452,6 +460,5 @@ let g:jedi#max_doc_height = "10"
 """"""""""""""""""""""""""""""""
 "使用flake8进行语法和风格检查。需要通过pip install flake8 安装。
 au BufRead *.py :let g:syntastic_python_checkers=["flake8"] 
-
 
 
