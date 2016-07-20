@@ -386,7 +386,7 @@ let g:syntastic_always_populate_loc_list = 1
 " 2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
 " 3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
 let g:syntastic_auto_loc_list = 0
-" "设置loc_list高亮值，默认为10.
+" "设置loc_list高度值，默认为10.
 let g:syntastic_loc_list_height = 5
 " loc_list 快捷键设置
 " 使用<F3>打开/关闭Error Location list
