@@ -127,7 +127,12 @@ let g:rehash256 = 1
 colorscheme molokai
 set bg=dark
 
-
+""""""""""""""""""""""""""""""""
+" 字体设置
+""""""""""""""""""""""""""""""""
+if has("win32")
+    set guifont=Consolas:h11
+endif
 """"""""""""""""""""""""""""""""
 " 工具栏和菜单设置
 """"""""""""""""""""""""""""""""
@@ -329,9 +334,8 @@ highlight FoldColumn guibg=darkgrey guifg=white
 
 if has('win32')
     " WINDOWS
-    let g:ycm_global_ycm_extra_conf =
-    '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
-    let g:ycm_python_binary_path = 'C:\\Python27'
+    let g:ycm_global_ycm_extra_conf = '$VIM\vimfiles\bundle\YouCompleteMe\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
+    let g:ycm_python_binary_path = 'C:\Python27\python.exe'
 else
     " *nix & OS X
     let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
