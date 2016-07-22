@@ -389,7 +389,7 @@ let g:syntastic_always_populate_loc_list = 1
 " 1 : When set to 1 the error window will be automatically opened when errors are detected, and closed when none are detected.
 " 2 :When set to 2 the error window will be automatically closed when no errors are detected, but not opened automatically. 
 " 3 :When set to 3 the error window will be automatically opened when errors are detected, but not closed automatically. 
-let g:syntastic_auto_loc_list = 0
+let g:syntastic_auto_loc_list = 1
 " "设置loc_list高度值，默认为10.
 let g:syntastic_loc_list_height = 5
 " loc_list 快捷键设置
@@ -443,7 +443,7 @@ let g:syntastic_aggregate_errors = 1
 " git : https://github.com/davidhalter/jedi-vim
 """"""""""""""""""""""""""""""""
 " 打开游标所在的函数或类对应的文档。" <, + r> "
-" let g:jedi#documentation_command = "<leader>r"
+let g:jedi#documentation_command = "k"
 " 始终保持文档窗口打开
 let g:jedi#auto_close_doc = 0
 " 文档显示buffer窗口的高度。
