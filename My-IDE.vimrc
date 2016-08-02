@@ -443,7 +443,7 @@ let g:syntastic_aggregate_errors = 1
 " git : https://github.com/davidhalter/jedi-vim
 """"""""""""""""""""""""""""""""
 " 打开游标所在的函数或类对应的文档。" <, + r> "
-let g:jedi#documentation_command = "k"
+let g:jedi#documentation_command = "<leader>k"
 " 始终保持文档窗口打开
 let g:jedi#auto_close_doc = 0
 " 文档显示buffer窗口的高度。
