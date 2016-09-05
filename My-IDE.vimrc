@@ -70,6 +70,27 @@ call vundle#end()            " required
 filetype on
 filetype plugin indent on
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"                        mouse                           "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set mouse=a
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"                    copy and paste                      "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Shift + Ctrl + v  = pasted from system buffer
+nmap <S-C-v> "+p
+imap <S-C-v> <Esc>"+p
+" shift + Ctrl + c = copy string to system buffer
+vmap <S-C-c> "+y
+imap <S-C-c> <Esc>"+y
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
 "              编码、配色配置等显示相关配置              "
