@@ -114,6 +114,9 @@ set fenc=utf-8
 " 文件字符编码检测列表
 set fencs=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
+" file coding
+set fileencoding=utf8
+
 "以双字节处理zh、ja、ko自然语言
 if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
     set ambiwidth=double
