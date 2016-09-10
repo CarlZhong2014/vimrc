@@ -85,11 +85,11 @@ set mouse=a
 "                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Shift + Ctrl + v  = pasted from system buffer
-nmap <S><C-v> "+p
-imap <S><C-v> <Esc>"+p
+nmap <A-v> "+p
+imap <A-v> <Esc>"+p
 " shift + Ctrl + c = copy string to system buffer
-vmap <S><C-c> "+y
-imap <S><C-c> <Esc>"+y
+map <A-c> "+y
+imap <A-c> <Esc>"+y
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -114,9 +114,6 @@ set tenc=utf-8
 set fenc=utf-8
 " 文件字符编码检测列表
 set fencs=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
-
-" file coding
-set fileencoding=utf8
 
 "以双字节处理zh、ja、ko自然语言
 if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
