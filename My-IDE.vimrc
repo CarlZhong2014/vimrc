@@ -56,6 +56,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Lokaltog/vim-powerline'
 " molokai 配色方案
 Plugin 'tomasr/molokai'
+Plugin 'vim-scripts/taglist.vim'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
@@ -84,11 +85,11 @@ set mouse=a
 "                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Shift + Ctrl + v  = pasted from system buffer
-nmap <S-C-v> "+p
-imap <S-C-v> <Esc>"+p
+nmap <S><C-v> "+p
+imap <S><C-v> <Esc>"+p
 " shift + Ctrl + c = copy string to system buffer
-vmap <S-C-c> "+y
-imap <S-C-c> <Esc>"+y
+vmap <S><C-c> "+y
+imap <S><C-c> <Esc>"+y
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -240,12 +241,8 @@ nnoremap <C-k> <C-w><C-k>
 nnoremap <C-l> <C-w><C-l>
 nnoremap <C-h> <C-w><C-h>
 
-"Quickly quit window when u press `,+w`
 
-
-""""""""""""""""""""""""""""""""
 " 标签页切换快捷键
-""""""""""""""""""""""""""""""""
 " 切换到上一个标签`,+q`
 map <leader>q :tabp<CR>
 " 切换到下一个标签`,+e`
@@ -260,6 +257,8 @@ map <leader>c :tabnew<CR>
 " 运行当前Python脚本。（根据环境将!python更换为Python的执行文件）
 autocmd FileType python map <F5> :!python %:p<CR>
 
+" taglist
+map <F4> :TlistToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                                        "
@@ -484,3 +483,12 @@ let g:jedi#max_doc_height = "5"
 au BufRead *.py :let g:syntastic_python_checkers=["flake8"] 
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                                        "
+"                     FRONTEND IDE                       "
+"                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead *.html :let g:ycm_semantic_triggers = {
+    \   'css': [ 're!^\s{4}', 're!:\s+'],
+    \   'html': [ '</' ],
+    \ }
