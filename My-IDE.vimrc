@@ -145,6 +145,7 @@ set nu
 " 使用monokai配色方案
 " git : https://github.com/tomasr/molokai
 """"""""""""""""""""""""""""""""
+set t_Co=256
 let g:rehash256 = 1
 colorscheme molokai
 set bg=dark
